@@ -8,7 +8,7 @@ public class Client{
 
     @POST
     @Produces({MediaType.TEXT_XML})
-    public void successfulLogin(){
+    public void Register(Class User){
 
     }
 
@@ -58,14 +58,14 @@ public class Client{
 
     @POST
     @Produces({MediaType.TEXT_XML})
-    public String setBalance(Class PurchaseCard, double balance){
-        PurchaseCard.addBalance(balance);
+    public String setBalance(Class ShoppingCart, double balance){
+        ShoppingCart.addBalance(balance);
         return "<p>Balance added</p>"
     }
 
     @POST
     @Produces({MediaType.TEXT_XML})
-    public String generatePurchaseCardID(Class PurchaseCard){
+    public String generatePurchaseCardID(Class ShoppingCard){
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
         StringBuilder sb = new StringBuilder(n);
         for (int i = 0; i < n; i++) {
@@ -73,26 +73,10 @@ public class Client{
             sb.append(AlphaNumericString.charAt(index));
         }
         PurchaseCard.setID(sb);
-
         return "<p>Purchase card ID generated</p>"
-    }
-
-
-    private static URI getBaseURI() {
-        return UriBuilder.fromUri("http://localhost:8080/com.vogella.jersey.jaxb").build();
     }
 
     public static void main(String[] args) {
         String uri = "https://localhost:3308/dvd_club";
-        EmpRequest request = new EmpRequest();
-
-        request.setId(2);
-        request.setName("PK");
-        try {
-            Client client = Client.create();
-            WebResource r = client.resource(uri);
-            ClientResponse response = r.type(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
-
-        }
     }
 }

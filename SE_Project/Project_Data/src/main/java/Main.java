@@ -29,7 +29,6 @@ class DVD{
     void setCopies(int copies){
         this.copies = copies;
     }
-
     DVD(String title, String actors, String director, int duration, String dub_languages, String sub_languages, String genre, String ISBN){
         this.title = title;
         this.actors = actors;
@@ -40,7 +39,11 @@ class DVD{
         this.genre = genre;
         this.ISBN = ISBN;
     }
-
+    void Display_product_info(){
+        return "Title: " + title + "\nactors: " + actors + "\ndirector: " + director +
+                "\nduration: " + duration + "\ndub_languages: " + dub_languages +
+                "\nsub_languages: " + sub_languages + "\ngenre: " + genre + "\nISBN: " + ISBN;
+    }
 }
 
 @WebServlet("/loginServlet")
@@ -61,9 +64,6 @@ class User extends HttpServlet{
         htmlRespone += "Your password is: " + password + "</h2>";
         htmlRespone += "</html>";
     }
-    void editOrder(List<Class>Order){
-        if(Order.getStatus().equals(""))
-    }
 }
 
 @XmlRootElement(name = "user")
@@ -73,7 +73,7 @@ class Customer extends User{
     private String Creditcardtype;
     private int expmonth;
     private int expyear;
-    Customer(String Fullname, String username, String password, String address, String Creditcardnumber, int CVV, String Creditcardtype, int expmonth, int expyear){
+    Customer(String Fullname, String username, String password, String address, String Creditcardnumber, int CVV, String Creditcardtype, int expmonth, int expyear) {
         Super(Fullname, username, password);
         this.address = address;
         this.Creditcardnumber = Creditcardnumber;
@@ -82,24 +82,9 @@ class Customer extends User{
         this.expmonth = expmonth;
         this.expyear = expyear;
     }
-
-    void EditOrder(List<Class>Order) {
-        for(Class order : Order){
-            if(order.getStatus())
-        }
-    }
-     CancelCard(List<Class>Card){
-        for(Class card : Card){
+     CancelCard(class ShoppingCard){
             if(!(card.getStatus().equals("Active"))){
                 System.out.println("The card can't be deleted");
-            }
-
-        }
-    }
-    void ViewOrders(List<Class>Order){
-        for(Class order : Order){
-            if(Fullname.equals(order.getFullname())){
-                System.out.println(order.getOrder());
             }
         }
     }
@@ -112,12 +97,6 @@ class Employee extends User{
         Super(Fullname, username, password);
         this.role = role;
     }
-    void ManageOrders(class Order){
-
-    }
-    void ManageCards(class Card){
-
-    }
     void getPassword(){
         return Password;
     }
@@ -125,7 +104,7 @@ class Employee extends User{
 
 @XmlRootElement(name = "order")
 class Order{
-    private String ID;
+    private String Order_ID;
     private String Deliveraddress;
     private String status;
     private String Customer_ID;
@@ -137,8 +116,8 @@ class Order{
     private int completionday;
     private int completionmonth;
     private int completionyear;
-    Order(String ID, String Deliveraddress, String status, String Customer_ID, String Card_ID, String ISBN, int creationday, int creationmonth, int creationyear){
-        this.ID = ID;
+    Order(String Order_ID, String Deliveraddress, String status, String Customer_ID, String Card_ID, String ISBN, int creationday, int creationmonth, int creationyear){
+        this.Order_ID = Order_ID;
         this.Deliveraddress = Deliveraddress;
         this.status = status;
         this.Customer_ID = Customer_ID;
@@ -157,16 +136,23 @@ class Order{
     String getCustomerID(){
         return Customer_ID;
     }
+    String viewOrder(){
+        return "Order ID: " + Order_ID + "\nDelivery Address: " + Deliveraddress
+                + "\nStatus: " + status + "\nCustomer ID: " + Customer_ID +
+                "\nShopping Card ID: " + Card_ID + "\nISBN: " + ISBN +
+                "\nDate of submission: " + creationday + "/" + creationmonth + "/" +
+                creationyear;
+    }
 }
-@XmlRootElement(name = "order")
-class PurchaseCard{
+@XmlRootElement(name = "Shopping Card")
+class ShoppingCard{
     private String ID;
     private String customerID;
     private int creationday;
     private int creationmonth;
     private int creationyear;
     private double balance = 0.0f;
-    PurchaseCard(String ID, String customerID, int creationday, int creationmonth, int creationyear){
+    ShoppingCard(String ID, String customerID, int creationday, int creationmonth, int creationyear){
         this.ID = ID;
         this.CustomerID = customerID;
         this.creationday = creationday;
@@ -174,9 +160,14 @@ class PurchaseCard{
         this.creationyear = creationyear;
     }
     void generateID(){
-        byte[] array = new byte[16];
-        new Random().nextBytes(array);
-        String ID = new String(array, Charset.forName("UTF-8"));
+        if(ID == null){
+            byte[] array = new byte[16];
+            new Random().nextBytes(array);
+            ID = new String(array, Charset.forName("UTF-8"));
+        }
+        else{
+            System.out.println("Can't be generated");
+        }
     }
     void addBalance(double balance){
         balance = balance + this.balance;

@@ -91,6 +91,32 @@ public class DBHandler{
         return orders;
     }
 
+    private static List<Customer> getCustomers(String ID, String Fullnme){
+        List<Customer> Customers = null;
+        boolean hasID = false, hasFullname = false;
+        hasID = (ID != null && (ID.trim().equals("")));
+        hasFullname = (Fullnme != null && (Fullnme.trim().equals("")));
+        Connection con = getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String query = "select * from customer";
+            if(hasID || hasFullname) query += "where ";
+            if(hasID) query += "ID = '" + ID + "' ";
+            if(hasFullname) query += " and fullname = '" + Fullname + "'";
+            ResultSet rs = stmt.execQuery(query);
+            if(rs.next()){
+                customers = new ArrayList<Customer>();
+                customers.add(getCustomersfromDB(rs));
+                while(rs.next()){
+                    customers.add(getCustomersfromDB(rs));
+                }
+            }
+            con.close();
+        } catch(Exception e){
+            System.out.println("An error has occured");
+        }
+        return orders;
+    }
 
     private static DVD getDVDsfromDB(ResultSet rs) throws SQLException{
         DVD dvd = new DVD(rs.getString("title"), rs.getString("director"), rs.getString("duration"), rs.getString("genre"), rs.getString("ISBN"),);
@@ -146,4 +172,30 @@ public class DBHandler{
             throw new MyInternalServerErrorException("Error");
         }
     }
+
+    public static void updateDVDNumberofCopies(DVD dvd, int copies){
+        Connection con = getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String query = "update dvd set copies = " + copies + " where id = " dvd.getISBN();
+            stmt.execute(query);
+            con.close();
+        }catch(Exception e){
+            throw new MyInternalServerErrorException("Error");
+        }
+    }
+
+    public static void updateDVDNumberofCopies(DVD dvd, int copies){
+        Connection con = getConnection();
+        try{
+            Statement stmt = con.createStatement();
+            String query = "update dvd set copies = " + copies + " where id = " dvd.getISBN();
+            stmt.execute(query);
+            con.close();
+        }catch(Exception e){
+            throw new MyInternalServerErrorException("Error");
+        }
+    }
+
+    public static void
 }

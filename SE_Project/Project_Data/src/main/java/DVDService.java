@@ -18,7 +18,6 @@ class DVDService{
             throw new BadRequestException("DVD ISBN not provided");
         }
         List<String>Director = dvd.getDirectors();
-        List<String>Actors = dvd.getActors();
         if(Director == null || Director.isEmpty()){
             throw new BadRequestException("MUST provide the director of the movie")
         }
@@ -38,7 +37,7 @@ class DVDService{
             List<DVD>DVDs = DBHandler.getDVDs(isbn, title, director);
             if(DVDs != null){
                 String answer = HTMLHandler.createHtmlDVD(DVDs);
-                return Response.ok(answerm MediaType.TEXT_HTML).build();
+                return Response.ok(answer, MediaType.TEXT_HTML).build();
             }
             else throw new NotFoundException();
         }
@@ -61,6 +60,7 @@ class DVDService{
                 shoppingcard.addDVDTitle(dvd.getTitle());
                 shoppingcard.addDVDCopies(requestedcopies);
                 dvd.setCopies(dvd.getAvailableCopies() - requestedcopies);
+                String answer = HTMLHandler.
             }
             else{
                 System.out.println("The DVD can't be added due to insufficient number of copies");
@@ -90,18 +90,4 @@ class DVDService{
 
     }
 
-    @POST
-    @Path("/admin")
-    public Response addDVD(@QueryParam("title") @DefaultValue("") String title,
-                           @QueryParam("actor") @DefaultValue("") String actor,
-                           @QueryParam("director") @DefaultValue("") String director,
-                           @QueryParam("length") @DefaultValue("0") int length,
-                           @QueryParam("dub_languages") @DefaultValue("") String dub_languages,
-                           @QueryParam("sub_languages") @DefaultValue("") String sub_languages,
-                           @QueryParam("genre") @DefaultValue("") String genre,
-                           @QueryParam("price") @DefaultValue("0.0f") double price,
-                           @QueryParam("copies") @DefaultValue("0") int copies) throws BadRequestException, MyInternalServerErrorException{
-
-    }
-    )
 }

@@ -6,11 +6,11 @@ class PaymentService{
     private static final Logger Logger = LoggerFactory.getLogger(DVDService.class);
 
     @GET
-    @Path{"/{OrderID}"}
+    @Path{"/{ID}"}
     @Consumer({MediaType.TEXT_HTML, MediaType.APPLICATION_XML, MediaType.TEXT_XML})
-    public Response getOrderinHtml(@PathParam("OrderID") String OrderID, @PathParam("CustomerID") String CustomerID){
-        if((OrderID != null && !OrderID.trim().equals(""))) {
-            List<Order>Orders = DBHandler.getOrders(OrderID, CustomerID);
+    public Response getCustomersinHTML(@PathParam("id") String ID, @PathParam("Fullname") String Fullname){
+        if((ID != null && !ID.trim().equals(""))) {
+            List<Customer>Customers = DBHandler.getCustomers(ID, Fullname);
             if(Orders != null){
                 String answer = HTMLHandler.createHtmlOrder(Orders);
                 return Response.ok(answerm MediaType.TEXT_HTML).build();
@@ -18,8 +18,8 @@ class PaymentService{
             else throw new NotFoundException();
         }
         else {
-            List<DVD> DVDs = DBHandler.getAllDVDs();
-            String answer = HTMLHandler.createHtmlDVD(DVDs);
+            List<Customer> customers = DBHandler.getAllCustomers();
+            String answer = HTMLHandler.createHtmlCustomer(customers);
             return Response.ok(answer, MediaType.TEXT_HTML).build();
         }
     }
@@ -32,22 +32,29 @@ class PaymentService{
         if(order == null){
             throw new BadRequestException("Order content not provided");
         }
-        String OrderID = order.getOrderID();
+        String id = customer.getID();
         if(OrderID == null || OrderID.trim().equals("")) {
             throw new BadRequestException("the order id must be provided");
         }
-        boolean exists = DBHandler.existsOrder(OrderID);
-        if(exists) throw new BadRequestException("Order with given ID exists");
+        boolean exists = DBHandler.existsOrder(ID);
+        if(exists) throw new BadRequestException("Customer with given ID exists");
         else DBHandler.createOrder(order);
         return Responce.ok().build();
     }
 
     @POST
-    @Path{"/{OrderID}"}
+    @Path{"/{ID}"}
     @Consumer({})
-    public Response updateOrderStatus(Order, order) throws BadRequestException,MyInternalServerErrorException{
-        logger.info("Got order: " + order);
-
+    public Response authenticateUser(User user) throws BadRequestException,MyInternalServerErrorException{
+        List<User>users;
+        for(int i = 0; i < users.size(); i++){
+            if(users.get(i).getUsername() == user.getUsername() && users.get(i).getPassword() == user.getPassword()){
+                return Response.ok(answer, MediaType.TEXT_HTML).build();
+            }
+            else{
+                System.out.println("user not found");
+            }
+        }
     }
 
 

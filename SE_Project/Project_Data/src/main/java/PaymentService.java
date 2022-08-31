@@ -3,7 +3,7 @@ import io.restassured.module.jsv.JsonSchemaValidator.*;
 @Path("/Order")
 
 class PaymentService{
-    private static final Logger Logger = LoggerFactory.getLogger(DVDService.class);
+    private static final Logger Logger = LoggerFactory.getLogger(PaymentService.class);
 
     @GET
     @Path{"/{OrderID}"}

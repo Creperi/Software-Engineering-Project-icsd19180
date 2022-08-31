@@ -55,7 +55,4 @@ class DVD{
             System.out.printlm(responce.readEntity(String.class));
         }
     }
-    void setPrice(double Price) {
-        this.price = price;
-    }
 }

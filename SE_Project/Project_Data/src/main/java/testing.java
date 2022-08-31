@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class testing{
 
-    @Test
+    @BeforeEach
     void insertDVD(){
         List<String>actors = new ArrayList<String>;
         actors.add("Timothée Chalamet");
@@ -15,5 +15,10 @@ class testing{
         sub_languages.add("German");
         sub_languages.add("French");
         DVD dvd = new DVD("DUNE", actors, "Dennis Villeneue", 155, "English", sub_languages, "Science Fiction", "8923j239-2");
+    }
+    
+    @Test
+    void testVariable(){
+        assertEquals("Dennis Villeneue", DVD.getDirector(), "Object should obtain correct information");
     }
 }

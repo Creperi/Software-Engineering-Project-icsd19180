@@ -16,5 +16,6 @@ class User{
         htmlResponse += "<h2>Your username is: " + username + "</h2><br/>";
         htmlResponse += "<h2>Your password is: " + password + "</h2>";
         htmlResponse += "</html>";
+        request.login(username, password);
     }
 }
